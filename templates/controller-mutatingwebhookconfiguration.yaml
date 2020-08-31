@@ -9,10 +9,9 @@ metadata:
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
     component: controller
-  annotations:
-    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ template "consul.fullname" . }}-controller
 webhooks:
 - clientConfig:
+    caBundle: {{ .Values.controller.certs.caBundle | quote }}
     service:
       name: {{ template "consul.fullname" . }}-controller-webhook
       namespace: {{ .Release.Namespace }}
