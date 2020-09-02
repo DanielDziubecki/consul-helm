@@ -92,6 +92,6 @@ spec:
       - name: cert
         secret:
           defaultMode: 420
-          secretName: webhook-server-cert
+          secretName: controller-webhook-cert
       serviceAccountName: {{ template "consul.fullname" . }}-controller
 {{- end }}

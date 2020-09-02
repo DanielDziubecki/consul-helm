@@ -33,14 +33,14 @@ spec:
         - "-ec"
         - |
           consul-k8s cert-manager \
-          -secret-name=webhook-server-cert \
+          -secret-name=controller-webhook-cert \
           -secret-namespace=${NAMESPACE} \
           {{- if .Values.controller.certs.secretName }}
           -tls-cert-file=/etc/controller/certs/{{ .Values.controller.certs.certName }} \
           -tls-key-file=/etc/controller/certs/{{ .Values.controller.certs.keyName }} \
           {{- else }}
-          -tls-auto={{ template "consul.fullname" . }}-controller-mutating-webhook-configuration \
-          -tls-auto-hosts={{ template "consul.fullname" . }}-controller-webhook,{{ template "consul.fullname" . }}-controller-webhook.${NAMESPACE}.svc,{{ template "consul.fullname" . }}-controller-webhook.${NAMESPACE}.svc.cluster.local \
+          -webhook-name={{ template "consul.fullname" . }}-controller-mutating-webhook-configuration \
+          -tls-hosts={{ template "consul.fullname" . }}-controller-webhook,{{ template "consul.fullname" . }}-controller-webhook.${NAMESPACE}.svc,{{ template "consul.fullname" . }}-controller-webhook.${NAMESPACE}.svc.cluster.local \
           {{- end }}
         env:
         - name: NAMESPACE
@@ -56,6 +56,19 @@ spec:
           requests:
             cpu: 100m
             memory: 20Mi
+        {{- if .Values.controller.certs.secretName }}
+        volumeMounts:
+        - name: user-certs
+          mountPath: /etc/controller/certs
+          readOnly: true
+        {{- end }}
       terminationGracePeriodSeconds: 10
       serviceAccountName: {{ template "consul.fullname" . }}-controller-cert-manager
+      {{- if .Values.controller.certs.secretName }}
+      volumes:
+      - name: user-certs
+        secret:
+          secretName: {{ .Values.controller.certs.secretName }}
+      {{- end }}
+
 {{- end }}

@@ -31,4 +31,4 @@ rules:
   - list
   - watch
   - patch
-  {{- end }}
+{{- end }}
