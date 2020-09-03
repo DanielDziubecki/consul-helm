@@ -32,7 +32,7 @@ spec:
         - "/bin/sh"
         - "-ec"
         - |
-          consul-k8s cert-manager \
+          consul-k8s webhook-cert-manager \
           -secret-name=controller-webhook-cert \
           -secret-namespace=${NAMESPACE} \
           {{- if .Values.controller.certs.secretName }}
