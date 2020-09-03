@@ -42,7 +42,7 @@ load _helpers
       -s templates/controller-cert-manager-deployment.yaml  \
       --set 'controller.enabled=true' \
       . | tee /dev/stderr |
-      yq '.spec.template.spec.containers[0].command | any(contains("-webhook-name"))' | tee /dev/stderr)
+      yq '.spec.template.spec.containers[0].command | any(contains("-m-webhook-config-name"))' | tee /dev/stderr)
   [ "${actual}" = "true" ]
 }
 

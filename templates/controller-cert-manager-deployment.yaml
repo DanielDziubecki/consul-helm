@@ -39,8 +39,8 @@ spec:
           -tls-cert-file=/etc/controller/certs/{{ .Values.controller.certs.certName }} \
           -tls-key-file=/etc/controller/certs/{{ .Values.controller.certs.keyName }} \
           {{- else }}
-          -webhook-name={{ template "consul.fullname" . }}-controller-mutating-webhook-configuration \
-          -tls-hosts={{ template "consul.fullname" . }}-controller-webhook,{{ template "consul.fullname" . }}-controller-webhook.${NAMESPACE}.svc,{{ template "consul.fullname" . }}-controller-webhook.${NAMESPACE}.svc.cluster.local \
+          -m-webhook-config-name={{ template "consul.fullname" . }}-controller-mutating-webhook-configuration \
+          -dns-sans={{ template "consul.fullname" . }}-controller-webhook,{{ template "consul.fullname" . }}-controller-webhook.${NAMESPACE}.svc,{{ template "consul.fullname" . }}-controller-webhook.${NAMESPACE}.svc.cluster.local \
           {{- end }}
         env:
         - name: NAMESPACE
